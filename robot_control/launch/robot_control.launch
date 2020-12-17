@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- <include file="$(find robot_control)/launch/rtabmap.launch"/> -->
+  <include file="$(find robot_control)/launch/rqt_tobot_control.launch"/>
 
   <node name="robot_control" pkg="robot_control" type="robot_control_node" output="screen">
     <remap from="joint_states" to="eufs/joint_states"/>
