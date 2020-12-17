@@ -1,0 +1,8 @@
+model: eufs
+
+publish_odom_tf: true
+
+wheelbase: 1.55
+wheel_diameter: 0.505
+max_speed: 10.0
+max_steering: 0.523599 #30 degrees
