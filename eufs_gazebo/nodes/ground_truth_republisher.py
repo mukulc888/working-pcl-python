@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """ground_truth_republisher.py
 
 Republishes a corrected version of the raw ground truth state estimate from the simulation in the

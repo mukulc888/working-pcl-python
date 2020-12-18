@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Software License Agreement (BSD License)
 #
 # Copyright (c) 2008, Willow Garage, Inc.
@@ -73,7 +73,7 @@ class TestGmapping(unittest.TestCase):
         error_count = error_count + 1
         error_total = error_total + abs(p0-p1)
     error_avg = float(error_total)/float(len(im0d))
-    print '%d / %d = %.6f (%.6f)'%(error_total,len(im0d),error_avg,total_error_tol)
+    print ('%d / %d = %.6f (%.6f)')%(error_total,len(im0d),error_avg,total_error_tol)
     self.assertTrue(error_avg <= total_error_tol)
 
   def test_basic_localization_stage(self):
@@ -84,12 +84,12 @@ class TestGmapping(unittest.TestCase):
       import rospy
       rospy.init_node('test', anonymous=True)
       while(rospy.rostime.get_time() == 0.0):
-        print 'Waiting for initial time publication'
+        print ('Waiting for initial time publication')
         time.sleep(0.1)
       start_time = rospy.rostime.get_time()
 
       while (rospy.rostime.get_time() - start_time) < target_time:
-        print 'Waiting for end time %.6f (current: %.6f)'%(target_time,(rospy.rostime.get_time() - start_time))
+        print ('Waiting for end time %.6f (current: %.6f)')%(target_time,(rospy.rostime.get_time() - start_time))
         time.sleep(0.1)
 
     f0 = os.path.join(roslib.packages.get_pkg_dir('gmapping'),'test','basic_localization_stage_groundtruth')
