@@ -26,3 +26,6 @@ llsamplerange: 0.01
 llsamplestep: 0.01 
 lasamplerange: 0.005 
 lasamplestep: 0.005 
+
+base_frame: base_link
+odom_frame: odom
