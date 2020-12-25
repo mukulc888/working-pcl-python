@@ -10,30 +10,30 @@
         <robotParam>robot_description</robotParam>
         <!-- controlPeriod>0.003</controlPeriod -->
         <controlPeriod>0.001</controlPeriod>
-	    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       </plugin>
     </gazebo>
-	</xacro:macro>
+  </xacro:macro>
 
-  <gazebo>	
+  <gazebo>
     <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>200.0</updateRate>
-        <bodyName>odom_ground_truth</bodyName>
-        <topicName>ground_truth/state_raw</topicName>
-        <gaussianNoise>0.00</gaussianNoise>
-        <frameName>world</frameName>
-        <!-- origin is at spawn location -->
-        <xyzOffset>43.0 -40 0</xyzOffset>
-        <rpyOffset>0 0 0</rpyOffset>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>200.0</updateRate>
+      <bodyName>odom_ground_truth</bodyName>
+      <topicName>ground_truth/state_raw</topicName>
+      <gaussianNoise>0.00</gaussianNoise>
+      <frameName>world</frameName>
+      <!-- origin is at spawn location -->
+      <xyzOffset>43.0 -40 0</xyzOffset>
+      <rpyOffset>0 0 0</rpyOffset>
     </plugin>
   </gazebo>
-	
+
   <!-- No Ackermann steering plugin -->
-	  
+
   <gazebo reference="base_footprint">
     <material>Gazebo/Green</material>
   </gazebo>
-  
+
 
 </robot>
