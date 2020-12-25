@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <param command="$(find xacro)/xacro '$(find description)/urdf/perceus.xacro'" name="robot_description" />
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d '$(find description)/config.rviz'" />
+</launch>

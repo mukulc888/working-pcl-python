@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="perceus">
+    <link name="base_link">
+        <inertial>
+            <mass value="100.0" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="1.391" ixy="0.004" ixz="0.0" iyy="6.853" iyz="0.0" izz="6.125" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <box length="2.0" width="2.0" height="1.0"/>
+            </geometry>
+        </visual>
+    </link>
+</robot>
