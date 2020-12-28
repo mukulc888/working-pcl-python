@@ -80,7 +80,7 @@
     </xacro:VLP-16> -->
 
     <xacro:VLP-16  parent="base_link" name="velodyne" topic="/velodyne_points" hz="10" samples="1200">
-        <origin xyz="1.700 0.0 -0.150" rpy="0 -${1.5*M_PI/180.0} 0"/>
+        <origin xyz="1.700 0.0 -0.150" rpy="0 0 0"/>
     </xacro:VLP-16>
 
     <xacro:zed_camera parent="base_link" prefix="zed">
@@ -136,8 +136,3 @@
 
 
 </robot>
-
-
-
-
-
