@@ -1,11 +1,11 @@
 # Parameters
-map_update_interval: 5.0 
+map_update_interval: 1.0 
 maxUrange: 16.0 
 sigma: 0.05 
 kernelSize: 1 
 lstep: 0.05 
 astep: 0.05 
-iterations: 50 
+iterations: 5 
 lsigma: 0.075 
 ogain: 3.0 
 lskip: 0 
@@ -17,23 +17,18 @@ linearUpdate: 1.0
 angularUpdate: 0.5 
 temporalUpdate: 3.0 
 resampleThreshold: 0.5 
-particles: 10 
+particles: 30 
 xmin: -50.0 
 ymin: -50.0 
 xmax: 50.0 
 ymax: 50.0 
-delta: 0.005 
+delta: 0.05 
 llsamplerange: 0.01 
 llsamplestep: 0.01 
 lasamplerange: 0.005 
 lasamplestep: 0.005 
 minimumScore: 0.0
-transform_publish_period: 0.0
-maxRange: 50.0
 
-# Required Transforms
 base_frame: base_link
 odom_frame: odom
-
-# Provided tf Transforms
-map: odom
+# map_frame: map
