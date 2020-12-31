@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <param command="$(find xacro)/xacro '$(find eufs_description)/robots/ads-dv.urdf.xacro' --inorder" name="robot_description"/>
+  <param command="$(find xacro)/xacro '$(find eufs_description)/robots/ads-dv.urdf.xacro' --inorder" name="robot_description" />
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/eufs" args="--shutdown-time 1 --namespace=/eufs
@@ -15,10 +15,10 @@
 			  left_rear_axle_controller
 			  right_rear_shock_controller
 			  right_rear_axle_controller
-			  joint_read_state_controller"/>
+			  joint_read_state_controller" />
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find eufs_gazebo)/config/eufs_control.yaml" command="load"/>
+  <rosparam file="$(find eufs_gazebo)/config/eufs_control.yaml" command="load" />
 
   <!-- once the joint_state is published, run the robot_state_publisher, the namespace has to be adapted -->
   <!-- convert joint states to TF transforms for rviz, etc -->

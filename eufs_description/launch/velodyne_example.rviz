@@ -74,11 +74,9 @@ Visualization Manager:
         base_footprint:
           base_link:
             velodyne2_base_link:
-              velodyne2:
-                {}
+              velodyne2: {}
             velodyne_base_link:
-              velodyne:
-                {}
+              velodyne: {}
       Update Interval: 0
       Value: true
     - Alpha: 1

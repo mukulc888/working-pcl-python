@@ -42,7 +42,7 @@
 #include <nodelet/loader.h>
 #include <string>
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
   ros::init(argc, argv, "laserscan_to_pointcloud_node");
   ros::NodeHandle private_nh("~");

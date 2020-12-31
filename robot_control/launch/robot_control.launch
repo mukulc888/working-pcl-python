@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find robot_control)/launch/rqt_robot_control.launch"/>
+  <include file="$(find robot_control)/launch/rqt_robot_control.launch" />
 
   <node name="robot_control" pkg="robot_control" type="robot_control_node" output="screen">
-    <remap from="joint_states" to="eufs/joint_states"/>
-    <rosparam command="load" file="$(find robot_control)/params.yaml"/>
+    <remap from="joint_states" to="eufs/joint_states" />
+    <rosparam command="load" file="$(find robot_control)/params.yaml" />
   </node>
 
 </launch>
