@@ -46,5 +46,5 @@
   <node name="ground_truth_republisher" pkg="eufs_gazebo" type="ground_truth_republisher.py" output="screen" />
 
   <!-- Launch map server -->
-  <node name="map_server" pkg="map_server" type="map_server" output="screen" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find eufs_description)/maps/map.yaml" output="screen" />
 </launch>
