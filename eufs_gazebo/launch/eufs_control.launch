@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <param command="$(find xacro)/xacro '$(find eufs_description)/robots/ads-dv.urdf.xacro' --inorder" name="robot_description" />
+  <param command="$(find xacro)/xacro '$(find eufs_description)/robots/ads-dv.urdf.xacro' " name="robot_description" />
 
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/eufs" args="--shutdown-time 1 --namespace=/eufs
