@@ -1,0 +1,43 @@
+name: ROS_CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    enCI_DESKTOP: "focal"
+      CI_SOURCE_PATH: $(pwd)
+      ROSINSTALL_FILE: $CI_SOURCE_PATH/dependencies.rosinstall
+      CATKIN_OPTIONS: $CI_SOURCE_PATH/catkin.options
+      ROS_PARALLEL_JOBS: "-j8 -l6"
+      # Set the python path manually to include /usr/-/python3.8/dist-packages
+      # as this is where apt installs python packages.
+      PYTHONPATH: $PYTHONPATH:/usr/lib/python3.8/dist-packages:/usr/local/lib/python3.8/dist-packages
+      ROS_DISTRO: noetic
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install ROS
+        run: |
+          sudo sh -c "echo \"deb http://packages.ros.org/ros/ubuntu $ROS_CI_DESKTOP main\" > /etc/apt/sources.list.d/ros-latest.list"
+          sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+          sudo apt update -qqq
+          sudo apt install -qqq -y ros-noetic-desktop-full dpkg python3-pip cmake python3-catkin-pkg python3-empy python3-nose python3-setuptools libgtest-dev build-essential
+          source /opt/ros/$ROS_DISTRO/setup.bash
+          # Prepare rosdep to install dependencies.
+          sudo pip3 install -U rosdep
+          sudo rosdep init
+          rosdep update --include-eol-distros  # Support EOL distros.
+      - name: Install Workspace Dependencies
+        run: |
+          sudo apt install -qqq -y ros-$ROS_DISTRO-ackermann-msgs ros-$ROS_DISTRO-twist-mux ros-$ROS_DISTRO-joy ros-$ROS_DISTRO-controller-manager ros-$ROS_DISTRO-velodyne-simulator ros-$ROS_DISTRO-effort-controllers ros-$ROS_DISTRO-velocity-controllers ros-$ROS_DISTRO-joint-state-controller ros-$ROS_DISTRO-openslam-gmapping 
+      - name: Build
+        run: |
+          source /opt/ros/$ROS_DISTRO/setup.bash
+          mkdir -p ~/catkin_ws/src
+          cd ~/catkin_ws/src
+          git clone https://github.com/TDR-SDC/fsd_simulator
+          # echo "::warning $CI_SOURCE_PATH"
+          # echo "::warning `ls -l`"
+          cd ..
+          catkin_make
+          source devel/setup.bash
