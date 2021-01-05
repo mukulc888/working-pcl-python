@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.19.0)
 project(eufs_gazebo)
 
 find_package(catkin REQUIRED COMPONENTS
