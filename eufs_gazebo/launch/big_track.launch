@@ -17,9 +17,6 @@
   <arg default="0.0" name="pitch" />
   <arg default="0.0" name="yaw" />
 
-  <!-- eufs_control launch file -->
-  <include file="$(find eufs_gazebo)/launch/eufs_control.launch" />
-
   <!-- Launch Rviz -->
   <include file="$(find eufs_gazebo)/launch/eufs_control.launch" />
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find eufs_description)/config/rviz/visualisator.rviz" />
@@ -35,6 +32,7 @@
   </include>
 
   <!-- Load the URDF into the ROS Parameter Server -->
+  <!-- <param command="$(find xacro)/xacro '$(find eufs_description)/robots/eufs.urdf.xacro' " name="robot_description"/> -->
   <param command="$(find xacro)/xacro '$(find eufs_description)/robots/ads-dv.urdf.xacro' " name="robot_description" />
 
   <!-- Call a python script to the run a service call to gazebo_ros to spawn a URDF robot -->
@@ -47,4 +45,6 @@
   <!-- Python script to republish ground truth -->
   <node name="ground_truth_republisher" pkg="eufs_gazebo" type="ground_truth_republisher.py" output="screen" />
 
+  <!-- Launch map server -->
+  <!-- <node name="map_server" pkg="map_server" type="map_server" args="$(find eufs_description)/maps/map.yaml" output="screen" /> -->
 </launch>
