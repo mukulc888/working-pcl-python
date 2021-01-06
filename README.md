@@ -1,4 +1,5 @@
 # TDR-SDC Formula Student Driverless Simulator
+![ROS_CI](https://github.com/TDR-SDC/fsd_simulator/workflows/ROS_CI/badge.svg?branch=master)
 ### Welcome to the SLAM Simulation repo of TDR-SDC
 
 This simulator uses gmapping for implementing SLAM on [eufs simulator](https://github.com/eufsa/eufs_sim)
