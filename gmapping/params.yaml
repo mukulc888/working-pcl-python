@@ -1,6 +1,7 @@
 # Parameters
 map_update_interval: 0.1
-maxUrange: 16.0
+maxUrange: 95.0
+maxRange: 110.0
 sigma: 0.01
 kernelSize: 1
 lstep: 0.05
