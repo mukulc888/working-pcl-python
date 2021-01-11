@@ -1,24 +1,24 @@
 # Parameters
-map_update_interval: 0.1
-maxUrange: 95.0
-maxRange: 110.0
+map_update_interval: 0.5  # Decides time interval in which gmapping updates/publishes map
+maxUrange: 100.0          # Maximum usable laser range (maxUrange<maxRange)
+maxRange: 110.0           # Maximum theoretical range of laser
 sigma: 0.01
-kernelSize: 1
-lstep: 0.05
+kernelSize: 2
+lstep: 0.01
 astep: 0.01
-iterations: 5
-lsigma: 0.075
+iterations: 50
+lsigma: 0.25
 ogain: 3.0
 lskip: 0
-srr: 0.02
-srt: 0.04
-str: 0.02
-stt: 0.04
-linearUpdate: 0.2
-angularUpdate: 0.5
+srr: 0.01
+srt: 0.02
+str: 0.01
+stt: 0.02
+linearUpdate: 0.3
+angularUpdate: 0.1
 temporalUpdate: 3.0
 resampleThreshold: 0.1
-particles: 6
+particles: 16             # Decides the value of neff. neff drops drastically on loop closure else remains almost equal to particles
 xmin: -50.0
 ymin: -50.0
 xmax: 50.0
@@ -28,8 +28,7 @@ llsamplerange: 0.01
 llsamplestep: 0.01
 lasamplerange: 0.005
 lasamplestep: 0.005
-minimumScore: 0.0
+minimumScore: 1.0
 
 base_frame: base_link
 odom_frame: odom
-# map_frame: map
