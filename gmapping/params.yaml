@@ -6,7 +6,7 @@ sigma: 0.01
 kernelSize: 2
 lstep: 0.01
 astep: 0.01
-iterations: 50
+iterations: 1
 lsigma: 0.25
 ogain: 3.0
 lskip: 0
@@ -18,7 +18,7 @@ linearUpdate: 0.3
 angularUpdate: 0.1
 temporalUpdate: 3.0
 resampleThreshold: 0.1
-particles: 16             # Decides the value of neff. neff drops drastically on loop closure else remains almost equal to particles
+particles: 50             # Decides the value of neff. neff drops drastically on loop closure else remains almost equal to particles
 xmin: -50.0
 ymin: -50.0
 xmax: 50.0
