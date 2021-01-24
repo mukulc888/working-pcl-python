@@ -4,7 +4,7 @@ import numpy as np
 import rospy
 from sensor_msgs.msg import CompressedImage
 from ackermann_msgs.msg import AckermannDriveStamped
-from cv_bridge import CvBridge, CvBridgeError
+from cv_bridge import CvBridge
 
 
 class TextOverlay:
