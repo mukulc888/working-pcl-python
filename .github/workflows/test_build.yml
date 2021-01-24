@@ -1,4 +1,4 @@
-name: ROS_CI
+name: ROS Build
 
 on: [push, pull_request]
 
