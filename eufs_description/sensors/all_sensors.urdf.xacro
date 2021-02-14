@@ -8,6 +8,9 @@
   <!-- Hokuyo utm30lx -->
   <xacro:include filename="$(find eufs_description)/sensors/hokuyo_utm30lx.urdf.xacro" />
 
+  <!-- SICK LMS 1xx -->
+  <xacro:include filename="$(find eufs_description)/sensors/sick_lms1xx.urdf.xacro" />
+
   <!-- Velodyne VLP-16 -->
   <xacro:include filename="$(find eufs_description)/sensors/VLP-16.urdf.xacro" />
   <xacro:include filename="$(find eufs_description)/sensors/VLP-16R.urdf.xacro" />
