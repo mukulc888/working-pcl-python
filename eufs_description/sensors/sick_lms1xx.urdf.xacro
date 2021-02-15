@@ -32,7 +32,7 @@
             </collision>
         </link>
 
-        <gazebo reference="${frame}">
+        <gazebo reference="${prefix}_base_link">
             <turnGravityOff>true</turnGravityOff>
             <sensor type="ray" name="${frame}">
                 <pose>0 0 0 0 0 0</pose>
@@ -60,7 +60,7 @@
                 </ray>
                 <plugin name="gazebo_ros_laser" filename="libgazebo_ros_laser.so">
                     <topicName>${topic}</topicName>
-                    <frameName>${frame}</frameName>
+                    <frameName>${prefix}_base_link</frameName>
                     <robotNamespace>${robot_namespace}</robotNamespace>
                 </plugin>
             </sensor>
