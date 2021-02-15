@@ -80,7 +80,7 @@
 
 
     <xacro:sick_lms1xx parent="base_link" prefix="lidar">
-        <origin xyz="1.700 0.0 -0.080" rpy="0 -0.0174533 0" />
+        <origin xyz="1.700 0.0 -0.080" rpy="0 -0 0" />
     </xacro:sick_lms1xx>
 
     <!-- <xacro:VLP-16  parent="base_link" name="velodyne" topic="/velodyne_points" hz="10">
