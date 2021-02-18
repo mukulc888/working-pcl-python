@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="path_planning" type="main.py" name="path_plan_node" output="screen">
+        <param name="desiredWaypointsFrequency" value="5" type="int" />
+
+        <!-- TODO: Comment me out -->
+        <param name="odom_topic" value="/robot_control/odom" />
+        <param name="world_frame" value="map" />
+
+        <param name="publishWaypoints" type="bool" value="true" />
+    </node>
+
+    <node pkg="pointcloud_process" type="final" name="pointcloud_processing" output="screen"/>
+</launch>
