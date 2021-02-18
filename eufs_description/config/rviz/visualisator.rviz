@@ -5,8 +5,6 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Status1
-        - /LaserScan1
       Splitter Ratio: 0.5
     Tree Height: 722
   - Class: rviz/Selection
@@ -209,6 +207,48 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /visual/best_tree_branch
+      Name: Marker
+      Namespaces:
+        publishBestBranchVisual: true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /visual/delaunay_lines
+      Name: Marker
+      Namespaces:
+        publishDelaunayLinesVisual: true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /visual/filtered_tree_branch
+      Name: Marker
+      Namespaces:
+        publisshFilteredBranchVisual: true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /visual/tree_marker_array
+      Name: MarkerArray
+      Namespaces:
+        rrt: true
+        rrt-leaves: true
+      Queue Size: 100
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /visual/waypoints
+      Name: MarkerArray
+      Namespaces:
+        new-publishWaypointsVisuals: true
+        saved-publishWaypointsVisuals: true
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
