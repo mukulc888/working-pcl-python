@@ -4,8 +4,8 @@
         <param name="desiredWaypointsFrequency" value="5" type="int" />
 
         <!-- TODO: Comment me out -->
-        <param name="odom_topic" value="/robot_control/odom" />
-        <param name="world_frame" value="map" />
+        <!-- <param name="odom_topic" value="/odometry/real"/>
+        <param name="world_frame" value="map"/> -->
 
         <param name="publishWaypoints" type="bool" value="true" />
     </node>

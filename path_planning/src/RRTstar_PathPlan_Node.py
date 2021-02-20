@@ -47,7 +47,7 @@ class RRTstar_PathPlan_Node:
            # self.world_frame = "world"
            # self.world_frame = "/map"
            #self.world_frame = self.odometry_topic
-           self.world_frame = 'odom_ground_truth'
+           self.world_frame = 'velodyne'
 
         waypointsFrequency = rospy.get_param('~desiredWaypointsFrequency', 5)
         self.waypointsPublishInterval = 1.0 / waypointsFrequency
@@ -62,7 +62,7 @@ class RRTstar_PathPlan_Node:
         self.waypointsPub = rospy.Publisher("/waypoints", WaypointsArray, queue_size=0)
 
         # visuals
-        self.treeVisualPub = rospy.Publisher("/visual/tree_marker_array", MarkerArray, queue_size=0)
+        self.treeVisualPub = rospy.Publisher("/visual/tree_marker_array", MarkerArray, queue_size=1)
         self.bestBranchVisualPub = rospy.Publisher("/visual/best_tree_branch", Marker, queue_size=1)
         self.filteredBranchVisualPub = rospy.Publisher("/visual/filtered_tree_branch", Marker, queue_size=1)
         self.delaunayLinesVisualPub = rospy.Publisher("/visual/delaunay_lines", Marker, queue_size=1)
@@ -106,6 +106,12 @@ class RRTstar_PathPlan_Node:
         orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
         (roll, pitch, yaw)  = euler_from_quaternion(orientation_list)
 
+        ########################---- Car position and Yaw for Visualization-------####################
+        # self.carPosX = 0
+        # self.carPosY = 0
+        # self.carPosYaw = 0
+
+        ########################---- Car position and Yaw for Practical-------####################
         self.carPosX = odometry.pose.pose.position.x
         self.carPosY = odometry.pose.pose.position.y
         self.carPosYaw = yaw
@@ -138,7 +144,7 @@ class RRTstar_PathPlan_Node:
 
         # print "map size: {0}".format(len(self.map.cones));
 
-        frontConesDist = 12
+        frontConesDist = 10 #12
         frontCones = self.getFrontConeObstacles(self.map, frontConesDist)
         # frontCones = [] # empty for tests
 
@@ -207,13 +213,15 @@ class RRTstar_PathPlan_Node:
                 if delaunayEdges:
                     # print "len(delaunayEdges):", len(delaunayEdges)
                     # print delaunayEdges
-
-                    newWaypoints = self.getWaypointsFromEdges(filteredBestBranch, delaunayEdges)
-                    print(newWaypoints)
+                    
+                    #########------------------
+                    #newWaypoints = self.getWaypointsFromEdges(filteredBestBranch, delaunayEdges)
+                    #print(newWaypoints)
+                    #########------------------
                 # else:
                 #     print "newWaypoints from filteredBestBranch", newWaypoints
-                #     newWaypoints = [(node.x, node.y) for node in filteredBestBranch]
-
+                    newWaypoints = [(node.x, node.y) for node in filteredBestBranch]
+                    #print(newWaypoints)
                 # print "find waypoints time: {0} ms".format((time.time() - findWaypointsStartTime) * 1000)
 
                 if newWaypoints:
