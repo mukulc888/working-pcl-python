@@ -10,5 +10,5 @@
         <param name="publishWaypoints" type="bool" value="true" />
     </node>
 
-    <node pkg="pointcloud_process" type="last_script.py" name="pointcloud_processing" output="screen"/>
+    <node pkg="pointcloud_process" type="final_script_vis.py" name="pointcloud_processing" output="screen"/>
 </launch>
