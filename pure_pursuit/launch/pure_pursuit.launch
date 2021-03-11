@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="pure_pursuit" name="pure_pursuit" type="pure_pursuit" />
+    <node pkg="pure_pursuit" name="waypoint_publisher" type="control_listpath.py" />
+</launch>
