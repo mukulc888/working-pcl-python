@@ -1,10 +1,16 @@
 # TDR-SDC Formula Student Driverless Simulator
 ![ROS_CI](https://github.com/TDR-SDC/fsd_simulator/workflows/ROS_CI/badge.svg?branch=master)
-### Welcome to the SLAM Simulation repo of TDR-SDC
+### Welcome to the official simulation codebase of TDR-SDC for Formula Student Driverless
 
-This simulator uses gmapping for implementing SLAM on [eufs simulator](https://github.com/eufsa/eufs_sim)
+## Packages
+1. `eufs_description`: contains the urdf of the model
+2. `eufs_gazebo`: contains all the gazebo worlds and simulation requirements
+3. `robot_control`: contains nodes to actuate the model in simulation
+4. `gmapping`: openSLAM-gmapping package
+5. `pure_pursuit`: Lateral controller
 
-## Prerequisites
+## Installation
+### Prerequisites
 - Ubuntu 20.04
 - Install [ros-noetic](http://wiki.ros.org/noetic/Installation/Ubuntu)
 - Packages:
@@ -18,13 +24,14 @@ This simulator uses gmapping for implementing SLAM on [eufs simulator](https://g
   - ros-noetic-velocity-controllers
   - ros-noetic-joint-state-controller
   - ros-noetic-gazebo-ros-control
+  - ros-noetic-navigation
 
-Here's a direct terminal command:
+Here's a direct terminal command to install all of them at once:
 ```bash
-sudo apt install ros-noetic-ackermann-msgs ros-noetic-twist-mux ros-noetic-joy ros-noetic-controller-manager ros-noetic-velodyne-simulator ros-noetic-effort-controllers ros-noetic-velocity-controllers ros-noetic-joint-state-controller ros-noetic-gazebo-ros-control 
+sudo apt install ros-noetic-ackermann-msgs ros-noetic-twist-mux ros-noetic-joy ros-noetic-controller-manager ros-noetic-velodyne-simulator ros-noetic-effort-controllers ros-noetic-velocity-controllers ros-noetic-joint-state-controller ros-noetic-gazebo-ros-control ros-noetic-navigation
 ```
 
-## How to build
+### How to build
 ```bash
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
@@ -38,6 +45,8 @@ catkin_make
 
 - ```source ~/catkin_ws/devel/setup.bash```
 2. Enter the three given commands in different terminals after using the sourcing the workspace
-- ``` roslaunch eufs_gazebo small_track.launch```
-- ``` roslaunch pointcloud_to_laserscan sample_node.launch```
-- ``` roslaunch gmapping gmapping.launch```
+```bash
+roslaunch eufs_gazebo small_track.launch      # launch eufs simulator
+roslaunch gmapping gmapping.launch            # launch gmapping
+roslaunch pure_pursuit pure_pursuit.launch    # launch pure_pursuit controller
+```
