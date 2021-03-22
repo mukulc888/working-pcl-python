@@ -13,6 +13,7 @@
 ### Prerequisites
 - Ubuntu 20.04
 - Install [ros-noetic](http://wiki.ros.org/noetic/Installation/Ubuntu)
+- cmake minimum version 3.19.0
 - Packages:
   - ros-noetic-ackermann-msgs
   - ros-noetic-twist-mux
@@ -25,10 +26,11 @@
   - ros-noetic-joint-state-controller
   - ros-noetic-gazebo-ros-control
   - ros-noetic-navigation
+  - ros-noetic-gmapping
 
 Here's a direct terminal command to install all of them at once:
 ```bash
-sudo apt install ros-noetic-ackermann-msgs ros-noetic-twist-mux ros-noetic-joy ros-noetic-controller-manager ros-noetic-velodyne-simulator ros-noetic-effort-controllers ros-noetic-velocity-controllers ros-noetic-joint-state-controller ros-noetic-gazebo-ros-control ros-noetic-navigation
+sudo apt install ros-noetic-ackermann-msgs ros-noetic-twist-mux ros-noetic-joy ros-noetic-controller-manager ros-noetic-velodyne-simulator ros-noetic-effort-controllers ros-noetic-velocity-controllers ros-noetic-joint-state-controller ros-noetic-gazebo-ros-control ros-noetic-navigation ros-noetic-gmapping
 ```
 
 ### How to build
