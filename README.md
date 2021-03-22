@@ -1,5 +1,5 @@
 # TDR-SDC Formula Student Driverless Simulator
-![ROS_CI](https://github.com/TDR-SDC/fsd_simulator/workflows/ROS_CI/badge.svg?branch=master)
+[![ROS Build](https://github.com/TDR-SDC/fsd_simulator/actions/workflows/test_build.yml/badge.svg?branch=master)](https://github.com/TDR-SDC/fsd_simulator/actions/workflows/test_build.yml)
 ### Welcome to the official simulation codebase of TDR-SDC for Formula Student Driverless
 
 ## Packages
