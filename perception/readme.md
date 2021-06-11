@@ -1,4 +1,4 @@
-# Installation Procedure\
+# Installation Procedure
 Clone Darnket Repository from https://github.com/AlexeyAB/darknet and follow steps from https://pjreddie.com/darknet/install/ \
 Changes in the make file :- \
                         GPU=1\
