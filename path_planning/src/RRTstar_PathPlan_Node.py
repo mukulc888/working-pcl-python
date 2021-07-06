@@ -47,7 +47,7 @@ class RRTstar_PathPlan_Node:
            # self.world_frame = "world"
            # self.world_frame = "/map"
            #self.world_frame = self.odometry_topic
-           self.world_frame = 'velodyne'
+           self.world_frame = 'odom'
 
         waypointsFrequency = rospy.get_param('~desiredWaypointsFrequency', 5)
         self.waypointsPublishInterval = 1.0 / waypointsFrequency
@@ -107,14 +107,14 @@ class RRTstar_PathPlan_Node:
         (roll, pitch, yaw)  = euler_from_quaternion(orientation_list)
 
         ########################---- Car position and Yaw for Visualization-------####################
-        self.carPosX = 0
-        self.carPosY = 0
-        self.carPosYaw = 0
+        #self.carPosX = 0
+        #self.carPosY = 0
+        #self.carPosYaw = 0
 
         ########################---- Car position and Yaw for Practical-------####################
-        # self.carPosX = odometry.pose.pose.position.x
-        # self.carPosY = odometry.pose.pose.position.y
-        # self.carPosYaw = yaw
+        self.carPosX = odometry.pose.pose.position.x
+        self.carPosY = odometry.pose.pose.position.y
+        self.carPosYaw = yaw
         #print "Estimated processing odometry callback: {0} ms".format((time.time() - start)*1000)
 
     def carSensorsCallback(self, command):
@@ -215,12 +215,12 @@ class RRTstar_PathPlan_Node:
                     # print delaunayEdges
                     
                     #########------------------
-                    #newWaypoints = self.getWaypointsFromEdges(filteredBestBranch, delaunayEdges)
+                    newWaypoints = self.getWaypointsFromEdges(filteredBestBranch, delaunayEdges)
                     #print(newWaypoints)
                     #########------------------
                 # else:
                 #     print "newWaypoints from filteredBestBranch", newWaypoints
-                    newWaypoints = [(node.x, node.y) for node in filteredBestBranch]
+                    #newWaypoints = [(node.x, node.y) for node in filteredBestBranch]
                     #print(newWaypoints)
                 # print "find waypoints time: {0} ms".format((time.time() - findWaypointsStartTime) * 1000)
 

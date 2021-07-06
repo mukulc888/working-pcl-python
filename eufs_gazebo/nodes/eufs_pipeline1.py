@@ -8,9 +8,13 @@ import time
 import rospy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-
+import sys
+sys.path.append('/home/mukul888/tdr_ws/src/eufs_gazebo/nodes/darknet')
 # import darknet functions to perform object detections
 from darknet import *
+
+
+bridge=CvBridge()
 
 # load in our YOLOv4 architecture network
 network, class_names, class_colors = load_network("cfg/yolov4-tiny-custom.cfg", "data/obj.data", "yolov4-tiny-custom_best.weights")
@@ -38,7 +42,7 @@ def darknet_helper(img, width, height):
 cap = cv2.VideoCapture('test.mp4')
 
 def image_callback(data):
-    image = CvBridge.imgmsg_to_cv2(data, 'bgr8')
+    image = bridge.imgmsg_to_cv2(data, 'bgr8')
     detections(image)
 
 def Subscriber():
@@ -71,7 +75,7 @@ def drawing(img, detection_queue):
             cv2.rectangle(img, (left, top), (right, bottom), (255, 0, 0), 2)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':s
     Subscriber()
     # detections_queue = Queue()
     # frame_queue = Queue(maxsize=1)

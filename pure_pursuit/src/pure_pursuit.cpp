@@ -101,7 +101,7 @@ PurePursuit::PurePursuit() : ld_(1.0), v_max_(0.1), v_(v_max_), w_max_(1.0), pos
   nh_private_.param<double>("acceleration", acc_, 100.0);
   nh_private_.param<double>("jerk", jerk_, 100.0);
   nh_private_.param<double>("steering_angle_limit", delta_max_, 1.57);
-  nh_private_.param<string>("map_frame_id", map_frame_id_, "map");
+  nh_private_.param<string>("map_frame_id", map_frame_id_, "odom");
   // Frame attached to midpoint of rear axle (for front-steered vehicles).
   nh_private_.param<string>("robot_frame_id", robot_frame_id_, "base_link");
   // Lookahead frame moving along the path as the vehicle is moving.
@@ -217,7 +217,7 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
       cmd_acker_.drive.steering_angle = std::min(atan2(2 * yt * L_, ld_2), delta_max_);
 
       // Set linear velocity for tracking.
-      cmd_vel_.linear.x = v_;
+      cmd_vel_.linear.x = 5*v_;
       cmd_acker_.drive.speed = v_;
 
       cmd_acker_.header.stamp = ros::Time::now();

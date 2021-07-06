@@ -13,6 +13,9 @@ import  sensor_msgs.point_cloud2 as pc2
 import pcl_helper
 from vehicle_msgs.msg import TrackCone, Track
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Float64MultiArray
+import numpy as np
+
 
 
 class Point_CloudProcess:
@@ -21,10 +24,11 @@ class Point_CloudProcess:
         self.carPosY = 0
         #rospy.init_node("final" , anonymous= True)
         
-        rospy.Subscriber("/velodyne_points" , PointCloud2 , self.callback)
+        rospy.Subscriber("/points_fused" , PointCloud2 , self.callback)
         rospy.Subscriber("/robot_control/odom", Odometry, self.odometryCallback)
         self.pub = rospy.Publisher("/velodyne_final" , PointCloud2 , queue_size=1)
         self.pub2 = rospy.Publisher("/track" , Track , queue_size=1)    
+        self.pub_arr = rospy.Publisher('/waypoints_arr', Float64MultiArray, queue_size=1)
             
     def odometryCallback(self, odometry):
         self.carPosX = odometry.pose.pose.position.x
@@ -82,7 +86,7 @@ class Point_CloudProcess:
     #Euclidian
     def do_euclidian_clustering(self, cloud):
         # Euclidean Clustering
-        white_cloud = pcl_helper.XYZRGB_to_XYZ(cloud) 
+        white_cloud = pcl_helper.XYZRGB_to_XYZ(cloud)
         tree = white_cloud.make_kdtree() 
         ec = white_cloud.make_EuclideanClusterExtraction()
 
@@ -105,6 +109,8 @@ class Point_CloudProcess:
         #cone = TrackCone()
         #cluster_coords.cones = []
         color_cluster_point_list = []
+        way_points = []
+        cord_list=[]
         for j, indices in enumerate(cluster_indices):
             x, y, z = 0, 0, 0
             cone_clusters = []
@@ -117,6 +123,13 @@ class Point_CloudProcess:
             cone_clusters.append(x/len(indices) + self.carPosX)
             cone_clusters.append(y/len(indices) + self.carPosY)
             print(cone_clusters)
+            cord_list.append(cone_clusters)
+           
+            
+
+
+
+
             #print(color_cluster_point_list) 
             #cone.x = x/len(indices)     
             #cone.y = y/len(indices)
@@ -135,12 +148,29 @@ class Point_CloudProcess:
         #print(len(cluster_coords.cones[0])) 
         
         #print("No. of cones visible at this moment ", len(color_cluster_point_list))
+        # right_cone = []
+        # left_cone = []
+        # for i, point in enumerate(cord_list):
+        #     check_y = point[1]-self.carPosY
+        #     if check_y>=0:
+        #         left_cone.append(point)
+        #     else:
+        #         right_cone.append(point)
+        
+
+        # N_CONE = min(len(right_cone), len(left_cone))
+        # for i in range(N_CONE):
+        #     mean_pt = [float((left_cone[i][0]+right_cone[i][0])/2), float((left_cone[i][1] + right_cone[i][1])/2)] 
+        #     way_points.append(mean_pt)
+        
+
+
         cluster_cloud = pcl.PointCloud_PointXYZRGB()
         cluster_cloud.from_list(color_cluster_point_list)
 
         ros_cluster_cloud = pcl_helper.pcl_to_ros(cluster_cloud)
 
-        return cluster_cloud, cluster_coords
+        return cluster_cloud, cluster_coords, cord_list
 
 
         # tolerance = 0.05
@@ -173,22 +203,36 @@ class Point_CloudProcess:
 
 
     def callback(self, input_ros_msg):
+        print("callback")
         self.cloud = pcl_helper.ros_to_pcl(input_ros_msg)
+        
         #cloud = pcl_helper.XYZRGB_to_XYZ(cloud)
 
         #cloud_denoised = do_statistical_outlier_filtering(cloud)
 
         #cloud_downsampled = do_voxel_grid_downsampling(cloud)
 
-        cloud_roi_x = self.do_passthrough(self.cloud, 'x', 0.0, 30.0)
+        # cloud_roi_x = self.do_passthrough(self.cloud, 'x', 0.0, 30.0)
 
-        cloud_roi_y = self.do_passthrough(cloud_roi_x, 'y', -5.0, 5.0)
+        # cloud_roi_y = self.do_passthrough(cloud_roi_x, 'y', -5.0, 5.0)
 
-        _, _, cloud_ransaced = self.do_ransac_plane_normal_segmentation(cloud_roi_y, 0.007)
-
-        cloud_clustered, cluster_coords = self.do_euclidian_clustering(cloud_ransaced)
+        # _, _, cloud_ransaced = self.do_ransac_plane_normal_segmentation(cloud_roi_y, 0.007)
+    
+        cloud_clustered, cluster_coords, cone_points = self.do_euclidian_clustering(self.cloud)
         self.pub2.publish(cluster_coords)
+        msg = Float64MultiArray()
+        emplist=[]
 
+        for i, points in enumerate(cone_points):
+            emplist.append(points[0])
+            emplist.append(points[1])
+
+        
+            
+        #way_points=np.array(way_points,dtype=np.float64)
+        msg.data = emplist
+        self.pub_arr.publish(msg) 
+        
         cloud_new = pcl_helper.pcl_to_ros(cloud_clustered)
         self.pub.publish(cloud_new)
 
