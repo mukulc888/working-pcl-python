@@ -120,7 +120,6 @@ def XYZRGB_to_XYZ(XYZRGB_cloud):
 
     for data in XYZRGB_cloud:
         points_list.append([data[0], data[1], data[2]])
-
     XYZ_cloud.from_list(points_list)
     return XYZ_cloud
 

@@ -1,6 +1,6 @@
 <launch>
     <arg name="points_src" default="/laserPointCloud" /> <!-- PointCloud source topic-->
-    <arg name="image_src" default="/zed/left/image_raw" /> <!-- Raw Image source topic to be rectified-->
+    <arg name="image_src" default="/img_corr" /> <!-- Raw Image source topic to be rectified-->
     <arg name="camera_info_src" default="/zed/left/camera_info" /> <!-- CameraInfo source topic-->
 
     <node name="autoware_image_rectifier" pkg="image_processor" type="image_rectifier" output="screen">

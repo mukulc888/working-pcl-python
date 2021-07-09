@@ -73,7 +73,7 @@ def drawing(img, detection_queue, data):
     img_bbox = np.zeros(img.shape).astype(np.float32)
     list_detect = []
     img_bbox.fill(255)
-    delta = 5
+    delta = 10
 
     for label, confidence, bbox in detections:
 
@@ -82,7 +82,7 @@ def drawing(img, detection_queue, data):
             bottom * height_ratio)
 
         if label.lower()=='yellow':
-            cv2.rectangle(img, (left-delta, top-delta), (right+delta, bottom+delta), (0, 255, 255), -1)
+            cv2.rectangle(img, (left-delta, top-delta), (right+delta, bottom+delta), (0, 255, 0), -1)
         elif label.lower()=='blue':
             cv2.rectangle(img, (left-delta, top-delta), (right+delta, bottom+delta), (255, 0, 0), -1)
     bridge = CvBridge()

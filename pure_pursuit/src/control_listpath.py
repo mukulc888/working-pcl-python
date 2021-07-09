@@ -18,6 +18,8 @@ def callback(odometry, way_data):
         temp.append([path[i], path[i+1]])
 
     path = temp
+    if len(path) == 0:
+        return 
     point=path[0]
     point_X = point[0]
     point_Y = point[1]

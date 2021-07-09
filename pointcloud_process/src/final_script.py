@@ -15,7 +15,9 @@ from vehicle_msgs.msg import TrackCone, Track
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Float64MultiArray
 import numpy as np
-
+import struct
+import ctypes
+import math
 
 
 class Point_CloudProcess:
@@ -84,8 +86,11 @@ class Point_CloudProcess:
         return indices, inliners, outliers
 
     #Euclidian
-    def do_euclidian_clustering(self, cloud):
+    def do_euclidian_clustering(self, cloud, cloud_og):
         # Euclidean Clustering
+
+        cloud_xyzrgb = self.store_cloud(cloud_og)
+        print(cloud_xyzrgb)
         white_cloud = pcl_helper.XYZRGB_to_XYZ(cloud)
         tree = white_cloud.make_kdtree() 
         ec = white_cloud.make_EuclideanClusterExtraction()
@@ -122,10 +127,33 @@ class Point_CloudProcess:
 
             cone_clusters.append(x/len(indices) + self.carPosX)
             cone_clusters.append(y/len(indices) + self.carPosY)
-            print(cone_clusters)
+            # print(cone_clusters)
             cord_list.append(cone_clusters)
            
-            
+        right_cone = []
+        left_cone = []
+        for point in cord_list:
+            pos = 0
+            min_dist = math.inf
+            for i, _col_pts in enumerate(cloud_xyzrgb):
+
+                dist = abs(math.dist(point, [_col_pts[0], _col_pts[1]]))
+                if dist<min_dist:
+                    min_dist = dist
+                    pos = i
+            r = cloud_xyzrgb[pos][3]
+            g = cloud_xyzrgb[pos][4]
+            b = cloud_xyzrgb[pos][5]
+
+            if b > g and b > r:
+                left_cone.append(point)
+                print("left_cone_", r , g, b, point, pos, min_dist)
+            elif g>b and g>r:
+                right_cone.append(point)
+                print("right_cone_", r , g, b, point, pos, min_dist)
+
+        # print("left:", left_cone)
+        # print("right", right_cone)
 
 
 
@@ -138,30 +166,21 @@ class Point_CloudProcess:
 
             #cluster_coords.cones = cone_clusters
             #cluster_coords.data.append(TrackCone(data = cone_clusters))
-            cluster_coords.data.append(TrackCone(x = x/len(indices) + self.carPosX,     
-                                                y = y/len(indices) + self.carPosY))
+        cluster_coords.data.append(TrackCone(x = x/len(indices) + self.carPosX,     
+                                            y = y/len(indices) + self.carPosY))
             #cluster_coords.cones[j].x = x/len(indices)
             #cluster_coords.cones[j].y = y/len(indices)
             #cluster_coords.cones[j].type = 'cone{k}' 
 
-        #print(len(cluster_coords.cones))
-        #print(len(cluster_coords.cones[0])) 
-        
-        #print("No. of cones visible at this moment ", len(color_cluster_point_list))
-        # right_cone = []
-        # left_cone = []
-        # for i, point in enumerate(cord_list):
-        #     check_y = point[1]-self.carPosY
-        #     if check_y>=0:
-        #         left_cone.append(point)
-        #     else:
-        #         right_cone.append(point)
+
         
 
-        # N_CONE = min(len(right_cone), len(left_cone))
-        # for i in range(N_CONE):
-        #     mean_pt = [float((left_cone[i][0]+right_cone[i][0])/2), float((left_cone[i][1] + right_cone[i][1])/2)] 
-        #     way_points.append(mean_pt)
+        
+
+        N_CONE = min(len(right_cone), len(left_cone))
+        for i in range(N_CONE):
+            mean_pt = [float((left_cone[i][0]+right_cone[i][0])/2), float((left_cone[i][1] + right_cone[i][1])/2)] 
+            way_points.append(mean_pt)
         
 
 
@@ -170,7 +189,7 @@ class Point_CloudProcess:
 
         ros_cluster_cloud = pcl_helper.pcl_to_ros(cluster_cloud)
 
-        return cluster_cloud, cluster_coords, cord_list
+        return cluster_cloud, cluster_coords, way_points
 
 
         # tolerance = 0.05
@@ -205,7 +224,7 @@ class Point_CloudProcess:
     def callback(self, input_ros_msg):
         print("callback")
         self.cloud = pcl_helper.ros_to_pcl(input_ros_msg)
-        
+    
         #cloud = pcl_helper.XYZRGB_to_XYZ(cloud)
 
         #cloud_denoised = do_statistical_outlier_filtering(cloud)
@@ -218,7 +237,7 @@ class Point_CloudProcess:
 
         # _, _, cloud_ransaced = self.do_ransac_plane_normal_segmentation(cloud_roi_y, 0.007)
     
-        cloud_clustered, cluster_coords, cone_points = self.do_euclidian_clustering(self.cloud)
+        cloud_clustered, cluster_coords, cone_points = self.do_euclidian_clustering(self.cloud, input_ros_msg)
         self.pub2.publish(cluster_coords)
         msg = Float64MultiArray()
         emplist=[]
@@ -236,7 +255,22 @@ class Point_CloudProcess:
         cloud_new = pcl_helper.pcl_to_ros(cloud_clustered)
         self.pub.publish(cloud_new)
 
-    
+    def store_cloud(self, pc2_msg):
+        cords = []
+        gen = pc2.read_points(pc2_msg)
+        print(gen)
+        for data in gen:            
+            test = data[3]
+            s = struct.pack('>f', test)
+            i = struct.unpack('>l', s)[0]
+            pack = ctypes.c_uint32(i).value
+                    
+            r = (pack & 0x00FF0000) >> 16
+            g = (pack & 0x0000FF00) >> 8
+            b = (pack & 0x000000FF)
+            cords.append([data[0], data[1], data[2], r, g, b])
+            # print(data)
+        return cords
 
 '''
 if __name__ == "__main__":
