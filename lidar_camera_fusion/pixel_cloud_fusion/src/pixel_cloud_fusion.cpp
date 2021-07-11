@@ -78,7 +78,7 @@ void ROSPixelCloudFusionApp::CloudCallback(const sensor_msgs::PointCloud2::Const
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr in_cloud(new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZRGB>::Ptr out_cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
-  pcl::fromROSMsg(*in_cloud_msg, *in_cloud);zz
+  pcl::fromROSMsg(*in_cloud_msg, *in_cloud);
   std::unordered_map<cv::Point, pcl::PointXYZ> projection_map;
 
   std::vector<pcl::PointXYZ> cam_cloud(in_cloud->points.size());
