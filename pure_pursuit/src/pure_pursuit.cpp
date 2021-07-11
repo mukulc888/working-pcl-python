@@ -217,7 +217,7 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
       cmd_acker_.drive.steering_angle = std::min(atan2(2 * yt * L_, ld_2), delta_max_);
 
       // Set linear velocity for tracking.
-      cmd_vel_.linear.x = 5*v_;
+      cmd_vel_.linear.x = 10*v_;
       cmd_acker_.drive.speed = v_;
 
       cmd_acker_.header.stamp = ros::Time::now();

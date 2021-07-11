@@ -18,6 +18,10 @@ import numpy as np
 import struct
 import ctypes
 import math
+from tf.transformations import euler_from_quaternion, quaternion_from_euler
+from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Vector3
 
 
 class Point_CloudProcess:
@@ -31,10 +35,33 @@ class Point_CloudProcess:
         self.pub = rospy.Publisher("/velodyne_final" , PointCloud2 , queue_size=1)
         self.pub2 = rospy.Publisher("/track" , Track , queue_size=1)    
         self.pub_arr = rospy.Publisher('/waypoints_arr', Float64MultiArray, queue_size=1)
+        self.theta = 0
+        self.cmd_vel_publisher = rospy.Publisher('/cmd',Twist, 10)
+
+        self.speed_vector = Vector3()
+        self.steer_vector = Vector3()
+        self.cmd_vel = Twist()
+        self.left_cone = []
+        self.right_cone = []
             
     def odometryCallback(self, odometry):
         self.carPosX = odometry.pose.pose.position.x
-        self.carPosY = odometry.pose.pose.position.y    
+        self.carPosY = odometry.pose.pose.position.y
+        quaternion = odometry.pose.pose.orientation
+        (r, p, y) = euler_from_quaternion([quaternion.x, quaternion.y, quaternion.z, quaternion.w])
+        self.theta = y
+
+    def transform_point(self, point):
+ 
+        x = point[0]
+        y = point[1]
+        x_new = x*math.cos(self.theta) - y*math.sin(self.theta) + self.carPosX
+        y_new = x*math.sin(self.theta) + y*math.cos(self.theta) + self.carPosY
+        
+        new_point = [x_new, y_new]
+        return new_point
+ 
+
 
     #Noise
     def do_statistical_outlier_filtering(self, cloud , mean_k = 10 , thresh = 5.0):
@@ -88,9 +115,9 @@ class Point_CloudProcess:
     #Euclidian
     def do_euclidian_clustering(self, cloud, cloud_og):
         # Euclidean Clustering
-
+        self.flag = False
         cloud_xyzrgb = self.store_cloud(cloud_og)
-        print(cloud_xyzrgb)
+        # print(cloud_xyzrgb)
         white_cloud = pcl_helper.XYZRGB_to_XYZ(cloud)
         tree = white_cloud.make_kdtree() 
         ec = white_cloud.make_EuclideanClusterExtraction()
@@ -116,27 +143,31 @@ class Point_CloudProcess:
         color_cluster_point_list = []
         way_points = []
         cord_list=[]
+        check_list = []
         for j, indices in enumerate(cluster_indices):
             x, y, z = 0, 0, 0
             cone_clusters = []
+            cone_clusters_2 = []
+
             for i, indice in enumerate(indices):
                 color_cluster_point_list.append([white_cloud[indice][0], white_cloud[indice][1], white_cloud[indice][2], pcl_helper.rgb_to_float(cluster_color)])
                 x = x + white_cloud[indice][0]
                 y = y + white_cloud[indice][1]
                 z = z + white_cloud[indice][2]
 
-            cone_clusters.append(x/len(indices) + self.carPosX)
-            cone_clusters.append(y/len(indices) + self.carPosY)
+            cone_clusters.append(x/len(indices))
+            cone_clusters.append(y/len(indices))
+
             # print(cone_clusters)
             cord_list.append(cone_clusters)
-           
+        # print("original", cord_list)
+        # print("transformed", check_list)
         right_cone = []
         left_cone = []
-        for point in cord_list:
+        for idx, point in enumerate(cord_list):
             pos = 0
             min_dist = math.inf
             for i, _col_pts in enumerate(cloud_xyzrgb):
-
                 dist = abs(math.dist(point, [_col_pts[0], _col_pts[1]]))
                 if dist<min_dist:
                     min_dist = dist
@@ -146,15 +177,29 @@ class Point_CloudProcess:
             b = cloud_xyzrgb[pos][5]
 
             if b > g and b > r:
-                left_cone.append(point)
+                _point = self.transform_point(point)
+                left_cone.append(_point)
+                self.left_cone.append(_point)
+            
                 print("left_cone_", r , g, b, point, pos, min_dist)
             elif g>b and g>r:
-                right_cone.append(point)
+                _point = self.transform_point(point)
+
+                right_cone.append(_point)
+                self.right_cone.append(_point)
                 print("right_cone_", r , g, b, point, pos, min_dist)
 
-        # print("left:", left_cone)
-        # print("right", right_cone)
+        rate = rospy.Rate(10)
 
+
+
+        if not right_cone:
+            right_cone.append(self.right_cone[-1])
+        if not left_cone:
+            left_cone.append(self.left_cone[-1])
+
+        print("left:", left_cone)
+        print("right", right_cone)
 
 
 
