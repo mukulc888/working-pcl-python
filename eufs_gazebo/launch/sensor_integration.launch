@@ -3,9 +3,9 @@
 
     <include file="$(find eufs_gazebo)/launch/small_track.launch" />
 
-    <node name="laser2pc" pkg="laser2pc" type="laser2point.py" output="screen"/>
+    <node name="laser2pc" pkg="laser2PC" type="laser2point.py" output="screen"/>
 
-    <node name="eufs_gazebo" pkg="eufs_gazebo" type="home/mukul888/tdr_ws/src/eufs_gazebo/nodes/darknet/eufs_pipeline.py" output="screen"/>
+     <node name="perception_pipeline" pkg="perception_pipeline" type="perception_pipeline.py" output="screen"/>
 
     <include file="$(find pixel_cloud_fusion)/launch/pixel_cloud_fusion.launch" />
 
